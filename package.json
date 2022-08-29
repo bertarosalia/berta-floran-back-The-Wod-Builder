@@ -1,5 +1,5 @@
 {
-  "name": "berta-floran-the-wod-builder-back",
+  "name": "the-wod-builder-back",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "@types/cors": "^2.8.12",
+    "@types/debug": "^4.1.7",
     "@types/express": "github:types/express",
     "@types/morgan": "^1.9.3",
     "chalk": "^4.1.0",
