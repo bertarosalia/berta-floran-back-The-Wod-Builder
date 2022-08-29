@@ -4,7 +4,7 @@ import Debug from "debug";
 import app from ".";
 import CustomError from "../utils/CustomError";
 
-const debug = Debug("the-wod-builder-back:server:startServer");
+const debug = Debug("the-wod-builder:server:startServer");
 
 const startServer = (port: number) =>
   new Promise((resolve, reject) => {
