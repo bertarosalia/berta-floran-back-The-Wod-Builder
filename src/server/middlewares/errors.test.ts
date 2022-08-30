@@ -3,6 +3,9 @@ import ICustomError from "../../types/errorsInterface";
 import { generalError, notFoundError } from "./errors";
 
 describe("Given a general error function", () => {
+  const exampleReq = {};
+  const exampleNext = jest.fn();
+
   describe("When is called", () => {
     test("Then it should response with status method with the received error message and code", async () => {
       const exampleError = {
@@ -10,13 +13,11 @@ describe("Given a general error function", () => {
         publicMessage: "Error has occurred",
       };
 
-      const exampleReq = {};
       const exampleRes = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn().mockResolvedValue(exampleError.publicMessage),
       };
 
-      const exampleNext = jest.fn();
       const status = 125;
       const responseJson = { error: exampleError.publicMessage };
 
@@ -30,31 +31,88 @@ describe("Given a general error function", () => {
       expect(exampleRes.status).toBeCalledWith(status);
       expect(exampleRes.json).toBeCalledWith(responseJson);
     });
-  });
-});
+    describe("When it's called with a status code null", () => {
+      test("Then it should respond with a status code 500", async () => {
+        const error: ICustomError = {
+          publicMessage: "",
+          code: 500,
+          message: "",
+          name: "",
+          statusCode: null,
+        };
 
-describe("Given a not found error middleware", () => {
-  describe("When it receives a response object", () => {
-    const exampleResponse = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    } as Partial<Response>;
-    const exampleRequest = {} as Partial<Request>;
+        const exampleRequest = {};
+        const exampleResponse = {
+          status: jest.fn().mockReturnThis(),
+          json: jest.fn().mockResolvedValue(error.publicMessage),
+        };
 
-    test("The it should call the response method status with code 404", () => {
-      const status = 404;
+        const nextExample = jest.fn();
 
-      notFoundError(exampleRequest as Request, exampleResponse as Response);
+        const expectedStatus = 500;
 
-      expect(exampleResponse.status).toHaveBeenCalledWith(status);
+        await generalError(
+          error as ICustomError,
+          exampleRequest as unknown as Request,
+          exampleResponse as unknown as Response,
+          nextExample as NextFunction
+        );
+
+        expect(exampleResponse.status).toBeCalledWith(expectedStatus);
+      });
+
+      describe("When instantiated with a null public message", () => {
+        test("Then it shold response wit a public message 'Everything went wrong'", async () => {
+          const error: ICustomError = {
+            publicMessage: null,
+            code: 125,
+            message: "",
+            name: "",
+            statusCode: 500,
+          };
+          const response = {
+            status: jest.fn().mockReturnThis(),
+            json: jest.fn().mockResolvedValue(error.publicMessage),
+          } as Partial<Response>;
+
+          const expectedResponse = { error: "Everything went wrong" };
+
+          generalError(
+            error,
+            exampleReq as Request,
+            response as Response,
+            exampleNext
+          );
+
+          expect(response.json).toBeCalledWith(expectedResponse);
+        });
+      });
     });
+  });
 
-    test("Then it should call the response method with a json object and an error property", () => {
-      const errorResponse = { error: "Endpoint not found" };
+  describe("Given a not found error middleware", () => {
+    describe("When it receives a response object", () => {
+      const exampleResponse = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      } as Partial<Response>;
+      const exampleRequest = {} as Partial<Request>;
 
-      notFoundError(exampleRequest as Request, exampleResponse as Response);
+      test("The it should call the response method status with code 404", () => {
+        const status = 404;
 
-      expect(exampleResponse.json).toHaveBeenCalledWith(errorResponse);
+        notFoundError(exampleRequest as Request, exampleResponse as Response);
+
+        expect(exampleResponse.status).toHaveBeenCalledWith(status);
+      });
+
+      test("Then it should call the response method with a json object and an error property", () => {
+        const errorResponse = { error: "Endpoint not found" };
+
+        notFoundError(exampleRequest as Request, exampleResponse as Response);
+
+        expect(exampleResponse.json).toHaveBeenCalledWith(errorResponse);
+      });
     });
   });
 });
