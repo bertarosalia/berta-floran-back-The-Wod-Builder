@@ -4,13 +4,13 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "ts": "tsc",
+    "build": "tsc",
     "ts:dev": "tsc -w",
     "start": "node .",
     "start:dev": "nodemon -q",
     "test": "jest src",
     "test-watch": "jest src --watchAll",
-    "test-coverage": "jest src/ --coverage --watchAll=false --passWithNoTests",
+    "test-coverage": "jest src/ --coverage --watchAll=false",
     "prepare": "husky install"
   },
   "keywords": [],
@@ -32,11 +32,16 @@
     "ts-jest": "^28.0.7",
     "typescript": "^4.7.4"
   },
+  "engines": {
+    "node": "^18.x"
+  },
   "dependencies": {
+    "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.12",
     "@types/debug": "^4.1.7",
-    "@types/express": "github:types/express",
+    "@types/express": "^4.17.13",
     "@types/morgan": "^1.9.3",
+    "bcryptjs": "^2.4.3",
     "chalk": "^4.1.0",
     "cors": "^2.8.5",
     "debug": "^4.3.4",

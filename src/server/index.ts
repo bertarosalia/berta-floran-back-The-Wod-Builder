@@ -6,6 +6,6 @@ const app = express();
 
 app.use(cors());
 app.use(morgan("dev"));
-app.use(express());
+app.use(express.json());
 
 export default app;
