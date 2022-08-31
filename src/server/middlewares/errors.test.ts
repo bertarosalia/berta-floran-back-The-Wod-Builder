@@ -50,7 +50,7 @@ describe("Given a general error function", () => {
 
       const nextExample = jest.fn();
 
-      const expectedStatus = 500;
+      const expectedStatus = error.code;
 
       await generalError(
         error as ICustomError,
