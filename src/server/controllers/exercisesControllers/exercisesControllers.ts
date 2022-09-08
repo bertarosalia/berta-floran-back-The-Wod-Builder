@@ -1,7 +1,7 @@
 import Debug from "debug";
 import { NextFunction, Request, Response } from "express";
-import Exercise from "../../database/models/Exercise";
-import CustomError from "../../utils/CustomError";
+import Exercise from "../../../database/models/Exercise";
+import CustomError from "../../../utils/CustomError";
 
 const debug = Debug("the-wod-builder:database:index");
 

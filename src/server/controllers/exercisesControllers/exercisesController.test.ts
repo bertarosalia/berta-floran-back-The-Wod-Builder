@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import Exercise from "../../database/models/Exercise";
-import ExerciseCreate from "../../types/exercisesInterface";
-import CustomError from "../../utils/CustomError";
+import Exercise from "../../../database/models/Exercise";
+import ExerciseCreate from "../../../types/exercisesInterface";
+import CustomError from "../../../utils/CustomError";
 import { deleteExercise, getExercises } from "./exercisesControllers";
 
 const exampleRes = {
@@ -57,7 +57,7 @@ describe("Given a controller delete one exercise by id", () => {
     });
   });
   describe("When it receives a request to delete an item but can´t find it", () => {
-    test("It sholud throw a custom error with 404 as code", async () => {
+    test("It should throw a custom error with 404 as code", async () => {
       const requestExample = {
         params: { id: "" },
       } as Partial<Request>;

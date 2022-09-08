@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcryptjs";
-import User from "../../database/models/User";
+import User from "../../../database/models/User";
 import registerUser from "./usersController";
-import CustomError from "../../utils/CustomError";
+import CustomError from "../../../utils/CustomError";
 
 describe("Given a registerUser controller", () => {
   const exampleUser = {
