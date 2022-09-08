@@ -2,7 +2,7 @@ import express from "express";
 import {
   getExercises,
   deleteExercise,
-} from "../controllers/exercisesControllers";
+} from "../../controllers/exercisesControllers/exercisesControllers";
 
 const theWodBuilderRouter = express.Router();
 
