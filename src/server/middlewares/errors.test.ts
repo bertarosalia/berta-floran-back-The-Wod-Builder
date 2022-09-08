@@ -39,7 +39,6 @@ describe("Given a general error function", () => {
         code: 500,
         message: "",
         name: "",
-        statusCode: null,
       };
 
       const exampleRequest = {};
@@ -69,7 +68,6 @@ describe("Given a general error function", () => {
         code: 125,
         message: "",
         name: "",
-        statusCode: 500,
       };
       const response = {
         status: jest.fn().mockReturnThis(),
