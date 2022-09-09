@@ -3,7 +3,7 @@ import chalk from "chalk";
 import Debug from "debug";
 import { NextFunction, Request, Response } from "express";
 import { ValidationError } from "express-validation";
-import ICustomError from "../../types/errorsInterface";
+import CustomError from "../../utils/CustomError";
 
 const debug = Debug("the-wod-builder:server:middlewares:errors");
 
@@ -12,13 +12,14 @@ export const notFoundError = (req: Request, res: Response) => {
 };
 
 export const generalError = (
-  error: ICustomError,
+  error: CustomError,
   req: Request,
   res: Response,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   next: NextFunction
 ) => {
-  const errorCode = error.code ?? 500;
+  const errorCode = error.code;
+  const status = error.statusCode ?? 500;
   let errorMessage = error.publicMessage ?? "Everything went wrong";
 
   if (error instanceof ValidationError) {
@@ -28,7 +29,7 @@ export const generalError = (
     });
     errorMessage = "Wrong data";
   }
-  debug(chalk.red(error.message));
+  debug(chalk.red(error.message, errorCode));
 
-  res.status(errorCode).json({ error: errorMessage });
+  res.status(status).json({ error: errorMessage });
 };
