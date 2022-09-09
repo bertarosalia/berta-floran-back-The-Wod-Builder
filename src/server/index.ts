@@ -12,7 +12,7 @@ app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 
-app.use("users", usersRouter);
+app.use("/users", usersRouter);
 app.use("/theWodBuilder", theWodBuilderRouter);
 
 app.use(notFoundError);
