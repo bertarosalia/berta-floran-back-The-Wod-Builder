@@ -14,8 +14,8 @@ const registerUser = async (
   user.password = await hashCreator(user.password);
 
   try {
-    await User.create(user);
-    res.status(201).json({ message: "User created" });
+    const newUser = await User.create(user);
+    res.status(201).json({ user: newUser });
   } catch (error) {
     const customError = new CustomError(
       error.code,
