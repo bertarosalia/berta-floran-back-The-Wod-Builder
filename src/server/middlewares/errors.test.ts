@@ -1,4 +1,5 @@
 import { Response, Request, NextFunction } from "express";
+import { ValidationError } from "express-validation";
 import CustomError from "../../utils/CustomError";
 import { generalError, notFoundError } from "./errors";
 
@@ -8,13 +9,7 @@ describe("Given a general error function", () => {
 
   describe("When is called", () => {
     test("Then it should response with status method with the received error message and code", async () => {
-      const exampleError: CustomError = {
-        code: "125",
-        publicMessage: "Everything went wrong",
-        message: "",
-        name: "",
-        statusCode: 254,
-      };
+      const exampleError = new CustomError(254, "", "Everything went wrong");
 
       const exampleRes = {
         status: jest.fn().mockReturnThis(),
@@ -37,13 +32,7 @@ describe("Given a general error function", () => {
   });
   describe("When it's called with a status code null", () => {
     test("Then it should respond with a status code 500", async () => {
-      const error: CustomError = {
-        publicMessage: "",
-        code: "",
-        message: "",
-        name: "",
-        statusCode: 500,
-      };
+      const error = new CustomError(null, "", "");
 
       const exampleRequest = {};
       const exampleResponse = {
@@ -53,7 +42,7 @@ describe("Given a general error function", () => {
 
       const nextExample = jest.fn();
 
-      const expectedStatus = error.statusCode;
+      const expectedStatus = 500;
 
       await generalError(
         error as CustomError,
@@ -67,13 +56,8 @@ describe("Given a general error function", () => {
   });
   describe("When instantiated with a null public message", () => {
     test("Then it shold response wit a public message 'Everything went wrong'", async () => {
-      const error: CustomError = {
-        publicMessage: null,
-        code: "",
-        message: "",
-        name: "",
-        statusCode: 125,
-      };
+      const error = new CustomError(500, "", null);
+
       const response = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn().mockResolvedValue(error.publicMessage),
@@ -81,7 +65,7 @@ describe("Given a general error function", () => {
 
       const expectedResponse = { error: "Everything went wrong" };
 
-      generalError(
+      await generalError(
         error,
         exampleReq as Request,
         response as Response,
@@ -89,6 +73,50 @@ describe("Given a general error function", () => {
       );
 
       expect(response.json).toBeCalledWith(expectedResponse);
+    });
+    describe("When it's called with a ValidationError", () => {
+      test("Then it should send a 400 status and error message", async () => {
+        const errorTest = new ValidationError(
+          {
+            body: [
+              {
+                message: "Error 1",
+                isJoi: true,
+                annotate: () => "",
+                _original: "",
+                name: "ValidationError",
+                details: [],
+              },
+              {
+                message: "Error 2",
+                isJoi: true,
+                annotate: () => "",
+                _original: "",
+                name: "ValidationError",
+                details: [],
+              },
+            ],
+          },
+          { statusCode: 400 }
+        );
+
+        const response = {
+          status: jest.fn().mockReturnThis(),
+          json: jest.fn(),
+        } as Partial<Response>;
+
+        const expectedStatus = 400;
+
+        await generalError(
+          errorTest,
+          exampleReq as Request,
+          response as Response,
+          exampleNext
+        );
+
+        expect(response.json).toBeCalledWith({ error: "Wrong data" });
+        expect(response.status).toBeCalledWith(expectedStatus);
+      });
     });
   });
 });
