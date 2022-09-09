@@ -1,5 +1,5 @@
 import { Response, Request, NextFunction } from "express";
-import ICustomError from "../../types/errorsInterface";
+import CustomError from "../../utils/CustomError";
 import { generalError, notFoundError } from "./errors";
 
 describe("Given a general error function", () => {
@@ -8,9 +8,12 @@ describe("Given a general error function", () => {
 
   describe("When is called", () => {
     test("Then it should response with status method with the received error message and code", async () => {
-      const exampleError = {
-        code: 125,
-        publicMessage: "Error has occurred",
+      const exampleError: CustomError = {
+        code: "125",
+        publicMessage: "Everything went wrong",
+        message: "",
+        name: "",
+        statusCode: 254,
       };
 
       const exampleRes = {
@@ -18,11 +21,11 @@ describe("Given a general error function", () => {
         json: jest.fn().mockResolvedValue(exampleError.publicMessage),
       };
 
-      const status = 125;
+      const status = 254;
       const responseJson = { error: exampleError.publicMessage };
 
       await generalError(
-        exampleError as ICustomError,
+        exampleError as CustomError,
         exampleReq as unknown as Request,
         exampleRes as unknown as Response,
         exampleNext as NextFunction
@@ -34,11 +37,12 @@ describe("Given a general error function", () => {
   });
   describe("When it's called with a status code null", () => {
     test("Then it should respond with a status code 500", async () => {
-      const error: ICustomError = {
+      const error: CustomError = {
         publicMessage: "",
-        code: 500,
+        code: "",
         message: "",
         name: "",
+        statusCode: 500,
       };
 
       const exampleRequest = {};
@@ -49,10 +53,10 @@ describe("Given a general error function", () => {
 
       const nextExample = jest.fn();
 
-      const expectedStatus = error.code;
+      const expectedStatus = error.statusCode;
 
       await generalError(
-        error as ICustomError,
+        error as CustomError,
         exampleRequest as unknown as Request,
         exampleResponse as unknown as Response,
         nextExample as NextFunction
@@ -63,11 +67,12 @@ describe("Given a general error function", () => {
   });
   describe("When instantiated with a null public message", () => {
     test("Then it shold response wit a public message 'Everything went wrong'", async () => {
-      const error: ICustomError = {
+      const error: CustomError = {
         publicMessage: null,
-        code: 125,
+        code: "",
         message: "",
         name: "",
+        statusCode: 125,
       };
       const response = {
         status: jest.fn().mockReturnThis(),
