@@ -50,3 +50,24 @@ export const deleteExercise = async (
     next(newError);
   }
 };
+
+export const createExercise = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const newExercise = req.body;
+
+  try {
+    const newExerciseCreated = await Exercise.create(newExercise);
+    res.status(201).json({ newExerciseCreated });
+  } catch (error) {
+    const customError = new CustomError(
+      400,
+      "Error creating new exercise",
+      "Cannot create an exercise"
+    );
+
+    next(customError);
+  }
+};
