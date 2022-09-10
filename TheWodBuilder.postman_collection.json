@@ -17,7 +17,25 @@
           "path": ["exercises"]
         }
       },
-      "response": []
+      "response": [
+        {
+          "name": "Get all exercises",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://bfloran-final-project-202207.herokuapp.com/theWodBuilder/exercises",
+              "protocol": "https",
+              "host": ["bfloran-final-project-202207", "herokuapp", "com"],
+              "path": ["theWodBuilder", "exercises"]
+            }
+          },
+          "_postman_previewlanguage": null,
+          "header": null,
+          "cookie": [],
+          "body": null
+        }
+      ]
     },
     {
       "name": "Delete exercise",
@@ -31,7 +49,7 @@
           "variable": [
             {
               "key": "id",
-              "value": null
+              "value": "6317089bb03f90616c71a41c"
             }
           ]
         },
@@ -48,6 +66,40 @@
           "raw": "{{apiproject}}",
           "host": ["{{apiproject}}"]
         }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Create new exercise",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{apiproject}}/create",
+          "host": ["{{apiproject}}"],
+          "path": ["create"]
+        },
+        "description": "create new exercise"
       },
       "response": []
     }
