@@ -1,7 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import Exercise from "../../../database/models/Exercise";
 import CustomError from "../../../utils/CustomError";
-import { deleteExercise, getExercises } from "./exercisesControllers";
+import {
+  createExercise,
+  deleteExercise,
+  getExercises,
+} from "./exercisesControllers";
 
 let res: Partial<Response>;
 let next = jest.fn() as NextFunction;
@@ -135,6 +139,34 @@ describe("Given a controller delete one exercise by id", () => {
           expect(responseTest.status).toHaveBeenCalledWith(expectedStatus);
         });
       });
+    });
+  });
+});
+
+describe("Given a create exercise controller", () => {
+  describe("When it's invoke with an empty idExercise", () => {
+    test("Then it should call next function with an error", async () => {
+      const bodyExercise = {};
+
+      const req: Partial<Request> = {
+        body: bodyExercise,
+      };
+
+      const ErrorCustomTest = new CustomError(
+        400,
+        "Error creating new exercise",
+        "Cannot create an exercise"
+      );
+
+      Exercise.create = jest.fn().mockRejectedValue(new Error());
+
+      await createExercise(
+        req as Request,
+        res as Response,
+        next as NextFunction
+      );
+
+      expect(next).toHaveBeenCalledWith(ErrorCustomTest);
     });
   });
 });
