@@ -1,59 +1,77 @@
 import { NextFunction, Request, Response } from "express";
 import Exercise from "../../../database/models/Exercise";
-import ExerciseCreate from "../../../types/exercisesInterface";
 import CustomError from "../../../utils/CustomError";
 import { deleteExercise, getExercises } from "./exercisesControllers";
 
-const exampleRes = {
-  status: jest.fn().mockReturnThis(),
-  json: jest.fn(),
-} as Partial<Response>;
+let res: Partial<Response>;
+let next: Partial<NextFunction>;
+
+beforeAll(() => {
+  res = {
+    status: jest.fn().mockReturnThis(),
+    json: jest.fn(),
+  };
+  next = jest.fn();
+});
+
+afterAll(() => {
+  jest.clearAllMocks();
+});
 
 describe("Given a controller get all exercises", () => {
   describe("When it receives a request", () => {
+    const req: Partial<Request> = {};
+
     test("Then it should response with a status code 200, and a mockExercise", async () => {
-      const exampleExercise: ExerciseCreate = {
-        body: "leg",
-        name: "deadlift",
-        description: "",
-        image: "",
-      };
-      const exampleRequest = {
-        body: {
-          exercise: exampleExercise,
-        },
-      } as Partial<Request>;
+      const mockExerciseList = [{ exercise: "" }];
+      Exercise.find = jest.fn().mockResolvedValue(mockExerciseList);
 
-      Exercise.find = jest.fn();
+      await getExercises(req as Request, res as Response, next as NextFunction);
 
-      const expectedStatusCode = 200;
+      expect(res.status).toHaveBeenCalledWith(200);
+    });
+    describe("And database return a void list of exercises", () => {
+      test("Then call next function with an error", async () => {
+        const errorExercise = new CustomError(
+          404,
+          "No exercises in database",
+          "Exercises not found"
+        );
 
-      await getExercises(exampleRequest as Request, exampleRes as Response);
+        const mockExerciseList: void[] = [];
+        Exercise.find = jest.fn().mockResolvedValue(mockExerciseList);
 
-      expect(exampleRes.status).toHaveBeenCalledWith(expectedStatusCode);
+        await getExercises(
+          req as Request,
+          res as Response,
+          next as NextFunction
+        );
+
+        expect(next).toHaveBeenCalledWith(errorExercise);
+      });
     });
   });
 });
+
 describe("Given a controller delete one exercise by id", () => {
   describe("When it receives a request with a delete exercise controller and a valid id", () => {
     test("Then it should response with a method status and a 'Successfully deleted exercise' message", async () => {
       const expectedJsonMessage = { message: "Successfully deleted exercise" };
-      const exampleRequest = {
+      const req = {
         params: { id: "12" },
       } as Partial<Request>;
 
-      const next = jest.fn() as NextFunction;
-      Exercise.findByIdAndDelete = jest.fn().mockResolvedValue(exampleRequest);
+      Exercise.findByIdAndDelete = jest.fn().mockResolvedValue(req);
       const expectedStatus = 200;
 
       await deleteExercise(
-        exampleRequest as Request,
-        exampleRes as Response,
+        req as Request,
+        res as Response,
         next as NextFunction
       );
 
-      expect(exampleRes.status).toHaveBeenCalledWith(expectedStatus);
-      expect(exampleRes.json).toHaveBeenCalledWith(expectedJsonMessage);
+      expect(res.status).toHaveBeenCalledWith(expectedStatus);
+      expect(res.json).toHaveBeenCalledWith(expectedJsonMessage);
     });
   });
   describe("When it receives a request to delete an item but can´t find it", () => {
@@ -70,8 +88,6 @@ describe("Given a controller delete one exercise by id", () => {
 
       Exercise.findByIdAndDelete = jest.fn().mockRejectedValue(expectedError);
 
-      const next = jest.fn() as NextFunction;
-
       const responseExample = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn(),
@@ -80,10 +96,16 @@ describe("Given a controller delete one exercise by id", () => {
       await deleteExercise(
         requestExample as Request,
         responseExample as Response,
-        next
+        next as NextFunction
       );
 
       expect(next).toHaveBeenCalledWith(expectedError);
     });
+  });
+});
+
+describe("Given a create exercise controller", () => {
+  describe("When it´s called with an exercises as request", () => {
+    test("It should response with an exercise created", () => {});
   });
 });
