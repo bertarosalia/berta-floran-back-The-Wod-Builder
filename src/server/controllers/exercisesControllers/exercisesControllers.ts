@@ -58,17 +58,16 @@ export const getById = async (
 ) => {
   try {
     const { id } = req.params;
-    const exercise = await Exercise.findById(id);
+    const exerciseFound = await Exercise.findById(id);
 
-    res.status(200).json({ exercise });
+    res.status(200).json({ exerciseFound });
   } catch {
-    next(
-      new CustomError(
-        404,
-        "Element not found",
-        "Cannot response to this request"
-      )
+    const newError = new CustomError(
+      404,
+      "Element not found",
+      "Cannot response to this request"
     );
+    next(newError);
   }
 };
 
@@ -81,7 +80,7 @@ export const createExercise = async (
 
   try {
     const newExerciseCreated = await Exercise.create(newExercise);
-    res.status(201).json({ newExerciseCreated });
+    res.status(200).json({ newExerciseCreated });
   } catch (error) {
     const customError = new CustomError(
       400,
