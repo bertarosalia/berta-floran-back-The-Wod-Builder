@@ -4,14 +4,15 @@ import CustomError from "../../../utils/CustomError";
 import {
   createExercise,
   deleteExercise,
+  getById,
   getExercises,
 } from "./exercisesControllers";
 
-let res: Partial<Response>;
+let expectedRes: Partial<Response>;
 let next = jest.fn() as NextFunction;
 
 beforeAll(() => {
-  res = {
+  expectedRes = {
     status: jest.fn().mockReturnThis(),
     json: jest.fn(),
   };
@@ -42,9 +43,13 @@ describe("Given a controller get all exercises", () => {
       const mockExerciseList = [{ exercise: "" }];
       Exercise.find = jest.fn().mockResolvedValue(mockExerciseList);
 
-      await getExercises(req as Request, res as Response, next as NextFunction);
+      await getExercises(
+        req as Request,
+        expectedRes as Response,
+        next as NextFunction
+      );
 
-      expect(res.status).toHaveBeenCalledWith(200);
+      expect(expectedRes.status).toHaveBeenCalledWith(200);
     });
     describe("When called but doesn´t return any valid data", () => {
       test("Then call next function with an error", async () => {
@@ -56,7 +61,7 @@ describe("Given a controller get all exercises", () => {
           "Exercises not found"
         );
 
-        await getExercises(req as Request, res as Response, next);
+        await getExercises(req as Request, expectedRes as Response, next);
 
         expect(next).toHaveBeenCalledWith(expectedError);
       });
@@ -77,12 +82,12 @@ describe("Given a controller delete one exercise by id", () => {
 
       await deleteExercise(
         req as Request,
-        res as Response,
+        expectedRes as Response,
         next as NextFunction
       );
 
-      expect(res.status).toHaveBeenCalledWith(expectedStatus);
-      expect(res.json).toHaveBeenCalledWith(expectedJsonMessage);
+      expect(expectedRes.status).toHaveBeenCalledWith(expectedStatus);
+      expect(expectedRes.json).toHaveBeenCalledWith(expectedJsonMessage);
     });
     describe("When it receives a request to delete an item but can´t find it", () => {
       test("It should throw a custom error with 404 as code", async () => {
@@ -143,6 +148,56 @@ describe("Given a controller delete one exercise by id", () => {
   });
 });
 
+describe("Given a controller get one exercise by id", () => {
+  describe("When it´s called with a correct id", () => {
+    test("Then it should response with a status 200", async () => {
+      const req = {
+        params: { id: "12" },
+      } as Partial<Request>;
+
+      Exercise.findById = jest.fn().mockResolvedValue(req);
+      const expectedStatus = 200;
+
+      await getById(
+        req as Request,
+        expectedRes as Response,
+        next as NextFunction
+      );
+
+      expect(expectedRes.status).toHaveBeenCalledWith(expectedStatus);
+    });
+
+    describe("When it receives a request to find one exercise with incorrect id", () => {
+      test("It should throw a custom error with 404 as code", async () => {
+        const requestExample = {
+          params: { id: "" },
+        } as Partial<Request>;
+
+        const expectedError = new CustomError(
+          404,
+          "Element not found",
+          "Cannot response to this request"
+        );
+
+        Exercise.findById = jest.fn().mockRejectedValue(expectedError);
+
+        const responseExample = {
+          status: jest.fn().mockReturnThis(),
+          json: jest.fn(),
+        } as Partial<Response>;
+
+        await getById(
+          requestExample as Request,
+          responseExample as Response,
+          next as NextFunction
+        );
+
+        expect(next).toHaveBeenCalledWith(expectedError);
+      });
+    });
+  });
+});
+
 describe("Given a create exercise controller", () => {
   describe("When it's invoke with an empty idExercise", () => {
     test("Then it should call next function with an error", async () => {
@@ -162,7 +217,7 @@ describe("Given a create exercise controller", () => {
 
       await createExercise(
         req as Request,
-        res as Response,
+        expectedRes as Response,
         next as NextFunction
       );
 
