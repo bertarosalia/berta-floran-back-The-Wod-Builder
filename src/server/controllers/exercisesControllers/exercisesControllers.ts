@@ -51,6 +51,27 @@ export const deleteExercise = async (
   }
 };
 
+export const getById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    const exercise = await Exercise.findById(id);
+
+    res.status(200).json({ exercise });
+  } catch {
+    next(
+      new CustomError(
+        404,
+        "Element not found",
+        "Cannot response to this request"
+      )
+    );
+  }
+};
+
 export const createExercise = async (
   req: Request,
   res: Response,
