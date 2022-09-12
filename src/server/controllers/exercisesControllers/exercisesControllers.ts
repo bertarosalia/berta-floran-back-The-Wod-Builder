@@ -34,7 +34,7 @@ export const deleteExercise = async (
   debug("Trying to delete exercise");
 
   try {
-    const exerciseDelete = await Exercise.findByIdAndDelete(id);
+    const exerciseDelete = await Exercise.findByIdAndDelete({ id });
 
     if (exerciseDelete) {
       res.status(200).json({ message: "Successfully deleted exercise" });
@@ -50,7 +50,6 @@ export const deleteExercise = async (
     next(newError);
   }
 };
-
 export const getById = async (
   req: Request,
   res: Response,
@@ -58,8 +57,7 @@ export const getById = async (
 ) => {
   try {
     const { id } = req.params;
-    const exerciseFound = await Exercise.findById(id);
-
+    const exerciseFound = await Exercise.findById({ id });
     res.status(200).json({ exerciseFound });
   } catch {
     const newError = new CustomError(
