@@ -1,11 +1,6 @@
 import { model, Schema } from "mongoose";
 
 const exerciseSchema = new Schema({
-  id: {
-    type: String,
-    required: false,
-    unique: true,
-  },
   body: {
     type: String,
     require: true,
