@@ -7,10 +7,20 @@ import Exercise from "../../../database/models/Exercise";
 
 let mongoServer: MongoMemoryServer;
 
+const ExerciseTest = {
+  id: "630f6e0bbb96458af2c0949a",
+  name: "front squat",
+  body: "legs",
+  description: "jjjvsdbfk",
+  image: "url",
+};
+
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
   const mongoURL = mongoServer.getUri();
   await connectDB(mongoURL);
+
+  await Exercise.create(ExerciseTest);
 });
 
 afterEach(async () => {
@@ -18,29 +28,17 @@ afterEach(async () => {
 });
 
 afterAll(async () => {
+  Exercise.deleteMany();
+
   await mongoose.connection.close();
   await mongoServer.stop();
+  jest.clearAllMocks();
 });
 
 describe("Given the endpoint GET /exercises", () => {
   describe("When it receives a request with method get", () => {
     test("Then it should response with status 200", async () => {
       const expectedStatus = 200;
-
-      await Exercise.create({
-        id: "630f6e0bbb96458af2c0949a",
-        name: "front squat",
-        body: "legs",
-        description: "jjjvsdbfk",
-        image: "url",
-      });
-
-      await request(app).get("/theWodBuilder/exercises").expect(expectedStatus);
-    });
-  });
-  describe("When it receives a request and there are not exercises in database", () => {
-    test("Then it should response with a not found error with status 404", async () => {
-      const expectedStatus = 404;
 
       await request(app).get("/exercises").expect(expectedStatus);
     });
