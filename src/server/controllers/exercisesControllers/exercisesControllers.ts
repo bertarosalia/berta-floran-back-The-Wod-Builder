@@ -30,7 +30,7 @@ export const deleteExercise = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { deleteId: exerciseId } = req.params;
+  const { exerciseId } = req.params;
   debug("Trying to delete exercise");
 
   try {
