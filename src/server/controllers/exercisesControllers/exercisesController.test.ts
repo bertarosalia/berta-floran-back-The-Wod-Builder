@@ -128,7 +128,7 @@ describe("Given a controller delete one exercise by id", () => {
             .fn()
             .mockResolvedValue(expectedResult);
 
-          const expectedStatus = 404;
+          const expectedStatus = 200;
 
           const responseTest = {
             status: jest.fn().mockReturnThis(),
