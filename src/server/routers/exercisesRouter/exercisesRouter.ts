@@ -1,16 +1,16 @@
 import express from "express";
 import {
-  getExercises,
+  getAllExercises,
   deleteExercise,
   createExercise,
-  getById,
+  getOneExerciseById,
 } from "../../controllers/exercisesControllers/exercisesControllers";
 
-const theWodBuilderRouter = express.Router();
+const exercisesRouter = express.Router();
 
-theWodBuilderRouter.get("/exercises", getExercises);
-theWodBuilderRouter.delete("/:id", deleteExercise);
-theWodBuilderRouter.post("/create", createExercise);
-theWodBuilderRouter.get("/:id", getById);
+exercisesRouter.get("/", getAllExercises);
+exercisesRouter.delete("/:exerciseId", deleteExercise);
+exercisesRouter.post("/create", createExercise);
+exercisesRouter.get("/:exerciseId", getOneExerciseById);
 
-export default theWodBuilderRouter;
+export default exercisesRouter;

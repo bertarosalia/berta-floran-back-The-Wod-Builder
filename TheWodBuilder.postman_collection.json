@@ -42,13 +42,13 @@
         "method": "DELETE",
         "header": [],
         "url": {
-          "raw": "{{apiproject}}/:_id",
+          "raw": "{{apiproject}}/exercises/:exerciseId",
           "host": ["{{apiproject}}"],
-          "path": [":_id"],
+          "path": ["exercises", ":exerciseId"],
           "variable": [
             {
-              "key": "_id",
-              "value": "631e079ebcfd56ceef3f1eef"
+              "key": "exerciseId",
+              "value": "6321e9d5c00225bb1f6b849a"
             }
           ]
         },
@@ -83,9 +83,9 @@
           }
         },
         "url": {
-          "raw": "{{apiproject}}/create",
+          "raw": "{{apiproject}}/exercises/create",
           "host": ["{{apiproject}}"],
-          "path": ["create"]
+          "path": ["exercises", "create"]
         },
         "description": "create new exercise"
       },
@@ -93,6 +93,9 @@
     },
     {
       "name": "Get one exercise by id",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
       "request": {
         "auth": {
           "type": "noauth"
@@ -101,18 +104,34 @@
         "header": [
           {
             "key": "id",
-            "value": "63170cbeb03f90616c71a420",
+            "value": "631a2afd37117ed57dcbc909",
             "type": "text"
           }
         ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
         "url": {
-          "raw": "{{apiproject}}/:id",
+          "raw": "{{apiproject}}/exercises/:id",
           "host": ["{{apiproject}}"],
-          "path": [":id"],
+          "path": ["exercises", ":id"],
+          "query": [
+            {
+              "key": "id",
+              "value": "",
+              "disabled": true
+            }
+          ],
           "variable": [
             {
               "key": "id",
-              "value": null
+              "value": "6317089bb03f90616c71a41c"
             }
           ]
         }

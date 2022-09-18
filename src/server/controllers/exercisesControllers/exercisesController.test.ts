@@ -4,8 +4,8 @@ import CustomError from "../../../utils/CustomError";
 import {
   createExercise,
   deleteExercise,
-  getById,
-  getExercises,
+  getOneExerciseById,
+  getAllExercises,
 } from "./exercisesControllers";
 
 let expectedRes: Partial<Response>;
@@ -43,7 +43,7 @@ describe("Given a controller get all exercises", () => {
       const mockExerciseList = [{ exercise: "" }];
       Exercise.find = jest.fn().mockResolvedValue(mockExerciseList);
 
-      await getExercises(
+      await getAllExercises(
         req as Request,
         expectedRes as Response,
         next as NextFunction
@@ -61,7 +61,7 @@ describe("Given a controller get all exercises", () => {
           "Exercises not found"
         );
 
-        await getExercises(req as Request, expectedRes as Response, next);
+        await getAllExercises(req as Request, expectedRes as Response, next);
 
         expect(next).toHaveBeenCalledWith(expectedError);
       });
@@ -158,7 +158,7 @@ describe("Given a controller get one exercise by id", () => {
       Exercise.findById = jest.fn().mockResolvedValue(req);
       const expectedStatus = 200;
 
-      await getById(
+      await getOneExerciseById(
         req as Request,
         expectedRes as Response,
         next as NextFunction
@@ -186,7 +186,7 @@ describe("Given a controller get one exercise by id", () => {
           json: jest.fn(),
         } as Partial<Response>;
 
-        await getById(
+        await getOneExerciseById(
           requestExample as Request,
           responseExample as Response,
           next as NextFunction
