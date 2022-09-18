@@ -5,7 +5,7 @@ import CustomError from "../../../utils/CustomError";
 
 const debug = Debug("the-wod-builder:database:index");
 
-export const getExercises = async (
+export const getAllExercises = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -46,7 +46,7 @@ export const deleteExercise = async (
   }
   res.status(200).json({ message: "Successfully deleted exercise" });
 };
-export const getById = async (
+export const getOneExerciseById = async (
   req: Request,
   res: Response,
   next: NextFunction
