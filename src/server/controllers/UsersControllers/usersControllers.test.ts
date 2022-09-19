@@ -1,20 +1,17 @@
 import { NextFunction, Request, Response } from "express";
-import bcrypt from "bcryptjs";
 import User from "../../../database/models/User";
 import userRegister from "./usersController";
 import CustomError from "../../../utils/CustomError/CustomError";
 
 describe("Given a registerUser controller", () => {
   const exampleUser = {
-    name: "Ana",
-    eMail: "ana@ana.com",
-    password: "1234",
+    name: "",
+    eMail: "",
+    password: "",
   };
 
   const exampleRequest = {
-    body: {
-      user: exampleUser,
-    },
+    body: exampleUser,
   } as Partial<Request>;
 
   const exampleRes = {
@@ -22,10 +19,7 @@ describe("Given a registerUser controller", () => {
     json: jest.fn(),
   } as Partial<Response>;
 
-  const bcryptHashExample = jest.fn().mockResolvedValue("test");
-  (bcrypt.hash as jest.Mock) = bcryptHashExample;
-
-  const exampleNext = jest.fn();
+  const exampleNext: Partial<NextFunction> = jest.fn();
 
   describe("When it receives an object as a response", () => {
     test("Then it should invoke the response method with status '201'", async () => {
@@ -41,17 +35,6 @@ describe("Given a registerUser controller", () => {
 
       expect(exampleRes.status).toHaveBeenCalledWith(status);
     });
-  });
-  test("Then it should invoke the response method json with a new user", async () => {
-    User.create = jest.fn().mockResolvedValue(exampleUser);
-
-    await userRegister(
-      exampleRequest as Request,
-      exampleRes as Response,
-      exampleNext as NextFunction
-    );
-
-    expect(exampleRes.json).toHaveBeenCalledWith({ user: exampleUser });
   });
 
   describe("When it doesn't receceives an user with required properties", () => {
