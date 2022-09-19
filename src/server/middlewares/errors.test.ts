@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import { ValidationError } from "express-validation";
-import CustomError from "../../utils/CustomError";
+import CustomError from "../../utils/CustomError/CustomError";
 import { generalError, notFoundError } from "./errors";
 
 describe("Given a general error function", () => {
