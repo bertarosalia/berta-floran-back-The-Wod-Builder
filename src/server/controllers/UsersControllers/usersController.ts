@@ -2,23 +2,23 @@ import { NextFunction, Request, Response } from "express";
 import User from "../../../database/models/User";
 import UserRegister from "../../../types/userInterfaces";
 import hashCreator from "../../../utils/auth/auth";
-import CustomError from "../../../utils/CustomError";
+import CustomError from "../../../utils/CustomError/CustomError";
 
-const registerUser = async (
+const userRegister = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const user: UserRegister = req.body;
+  const userData: UserRegister = req.body;
 
-  user.password = await hashCreator(user.password);
+  userData.password = await hashCreator(userData.password);
 
   try {
-    const newUser = await User.create(user);
+    const newUser = await User.create(userData);
     res.status(201).json({ user: newUser });
   } catch (error) {
     const customError = new CustomError(
-      error.code,
+      400,
       error.message,
       "Error creating new user"
     );
@@ -26,4 +26,4 @@ const registerUser = async (
   }
 };
 
-export default registerUser;
+export default userRegister;

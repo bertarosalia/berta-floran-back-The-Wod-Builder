@@ -2,7 +2,7 @@ import "../loadEnvironment";
 import chalk from "chalk";
 import Debug from "debug";
 import app from ".";
-import CustomError from "../utils/CustomError";
+import CustomError from "../utils/CustomError/CustomError";
 
 const debug = Debug("the-wod-builder:server:startServer");
 

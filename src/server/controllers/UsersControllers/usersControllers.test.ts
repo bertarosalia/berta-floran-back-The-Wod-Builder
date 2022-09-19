@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import User from "../../../database/models/User";
-import registerUser from "./usersController";
-import CustomError from "../../../utils/CustomError";
+import userRegister from "./usersController";
+import CustomError from "../../../utils/CustomError/CustomError";
 
 describe("Given a registerUser controller", () => {
   const exampleUser = {
@@ -33,7 +33,7 @@ describe("Given a registerUser controller", () => {
 
       User.create = jest.fn();
 
-      await registerUser(
+      await userRegister(
         exampleRequest as Request,
         exampleRes as Response,
         exampleNext as NextFunction
@@ -45,7 +45,7 @@ describe("Given a registerUser controller", () => {
   test("Then it should invoke the response method json with a new user", async () => {
     User.create = jest.fn().mockResolvedValue(exampleUser);
 
-    await registerUser(
+    await userRegister(
       exampleRequest as Request,
       exampleRes as Response,
       exampleNext as NextFunction
@@ -59,7 +59,7 @@ describe("Given a registerUser controller", () => {
       const exampleError = new CustomError(404, "Error", "Public Error");
       User.create = jest.fn().mockRejectedValue(exampleError);
 
-      await registerUser(
+      await userRegister(
         exampleRequest as Request,
         exampleRes as Response,
         exampleNext as NextFunction

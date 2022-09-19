@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import Exercise from "../../../database/models/Exercise";
-import CustomError from "../../../utils/CustomError";
+import CustomError from "../../../utils/CustomError/CustomError";
 import {
   createExercise,
   deleteExercise,
