@@ -8,7 +8,6 @@ import Exercise from "../../../database/models/Exercise";
 let mongoServer: MongoMemoryServer;
 
 const ExerciseTest = {
-  id: "630f6e0bbb96458af2c0949a",
   name: "front squat",
   body: "legs",
   description: "jjjvsdbfk",
@@ -41,6 +40,19 @@ describe("Given the endpoint GET /exercises", () => {
       const expectedStatus = 200;
 
       await request(app).get("/exercises").expect(expectedStatus);
+    });
+  });
+});
+
+describe("When use the endpoint POST exercises/create", () => {
+  describe("And receives a correct request with exercises info", () => {
+    test("Then it should response with the new exercise created", async () => {
+      const expectedStatus = 200;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { body } = await request(app)
+        .post("/exercises/create")
+        .field("name", "snatch")
+        .expect(expectedStatus);
     });
   });
 });
