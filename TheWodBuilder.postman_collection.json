@@ -12,9 +12,8 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "{{apiproject}}/exercises",
-          "host": ["{{apiproject}}"],
-          "path": ["exercises"]
+          "raw": "{{apiModified}}exercises",
+          "host": ["{{apiModified}}exercises"]
         }
       },
       "response": [
@@ -135,6 +134,29 @@
             }
           ]
         }
+      },
+      "response": []
+    },
+    {
+      "name": "Register an user",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\": \"Berta\",\r\n\"email\": \"berta@berta.com\",\r\n\"password\": \"12345\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{apiproject}}user/register",
+          "host": ["{{apiproject}}user"],
+          "path": ["register"]
+        },
+        "description": "Register an user"
       },
       "response": []
     }
