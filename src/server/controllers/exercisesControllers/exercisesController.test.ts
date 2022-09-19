@@ -8,11 +8,11 @@ import {
   getAllExercises,
 } from "./exercisesControllers";
 
-let expectedRes: Partial<Response>;
+let res: Partial<Response>;
 let next = jest.fn() as NextFunction;
 
 beforeAll(() => {
-  expectedRes = {
+  res = {
     status: jest.fn().mockReturnThis(),
     json: jest.fn(),
   };
@@ -45,11 +45,11 @@ describe("Given a controller get all exercises", () => {
 
       await getAllExercises(
         req as Request,
-        expectedRes as Response,
+        res as Response,
         next as NextFunction
       );
 
-      expect(expectedRes.status).toHaveBeenCalledWith(200);
+      expect(res.status).toHaveBeenCalledWith(200);
     });
     describe("When called but doesn´t return any valid data", () => {
       test("Then call next function with an error", async () => {
@@ -61,7 +61,7 @@ describe("Given a controller get all exercises", () => {
           "Exercises not found"
         );
 
-        await getAllExercises(req as Request, expectedRes as Response, next);
+        await getAllExercises(req as Request, res as Response, next);
 
         expect(next).toHaveBeenCalledWith(expectedError);
       });
@@ -82,12 +82,12 @@ describe("Given a controller delete one exercise by id", () => {
 
       await deleteExercise(
         req as Request,
-        expectedRes as Response,
+        res as Response,
         next as NextFunction
       );
 
-      expect(expectedRes.status).toHaveBeenCalledWith(expectedStatus);
-      expect(expectedRes.json).toHaveBeenCalledWith(expectedJsonMessage);
+      expect(res.status).toHaveBeenCalledWith(expectedStatus);
+      expect(res.json).toHaveBeenCalledWith(expectedJsonMessage);
     });
     describe("When it receives a request to delete an item but can´t find it", () => {
       test("It should throw a custom error with 404 as code", async () => {
@@ -160,11 +160,11 @@ describe("Given a controller get one exercise by id", () => {
 
       await getOneExerciseById(
         req as Request,
-        expectedRes as Response,
+        res as Response,
         next as NextFunction
       );
 
-      expect(expectedRes.status).toHaveBeenCalledWith(expectedStatus);
+      expect(res.status).toHaveBeenCalledWith(expectedStatus);
     });
 
     describe("When it receives a request to find one exercise with incorrect id", () => {
@@ -217,7 +217,7 @@ describe("Given a create exercise controller", () => {
 
       await createExercise(
         req as Request,
-        expectedRes as Response,
+        res as Response,
         next as NextFunction
       );
 
