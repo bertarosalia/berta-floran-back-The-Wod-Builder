@@ -1,7 +1,7 @@
 interface CustomJwtPayload {
   id: string;
-  name: string;
-  image: string;
+  email: string;
+  image?: string;
 }
 
 export default CustomJwtPayload;
