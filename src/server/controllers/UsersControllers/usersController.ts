@@ -1,10 +1,12 @@
 import { NextFunction, Request, Response } from "express";
+import bcrypt from "bcryptjs";
 import User from "../../../database/models/User";
-import UserRegister from "../../../types/userInterfaces";
-import { hashCreator } from "../../../utils/auth/auth";
+import CustomJwtPayload from "../../../types/payload";
+import { UserRegister, DatabaseUser, LoginUser } from "../../../types/user";
+import { createToken, hashCreator } from "../../../utils/auth/auth";
 import CustomError from "../../../utils/CustomError/CustomError";
 
-const userRegister = async (
+export const userRegister = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -25,5 +27,64 @@ const userRegister = async (
     next(customError);
   }
 };
+export const userLogin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const user: LoginUser = req.body;
+  const userError = new CustomError(
+    403,
+    "User not found",
+    "User or password not valid"
+  );
+  let findUser: DatabaseUser;
 
-export default userRegister;
+  try {
+    findUser = await User.findOne({ email: user.email });
+
+    if (!findUser) {
+      next(userError);
+      return;
+    }
+  } catch (error) {
+    const customMongooseError = new CustomError(
+      403,
+      (error as Error).message,
+      "User or password invalid"
+    );
+    next(customMongooseError);
+    return;
+  }
+
+  try {
+    const isPasswordValid = await bcrypt.compare(
+      user.password,
+      findUser.password
+    );
+    if (!isPasswordValid) {
+      userError.message = "Password invalid";
+      next(userError);
+      return;
+    }
+  } catch (error) {
+    const hashError = new CustomError(
+      403,
+      (error as Error).message,
+      "User or password not valid"
+    );
+    next(hashError);
+    return;
+  }
+
+  const payload: CustomJwtPayload = {
+    id: findUser.id,
+    email: findUser.email,
+  };
+
+  const responseData = {
+    token: createToken(payload),
+  };
+
+  res.status(200).json(responseData);
+};
