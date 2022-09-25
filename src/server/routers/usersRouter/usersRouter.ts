@@ -11,4 +11,4 @@ const userRouter = express.Router();
 userRouter.post("/register", validate(registerValidation), userRegister);
 userRouter.post("/login", userLogin);
 
-export default userRegister;
+export default userRouter;
