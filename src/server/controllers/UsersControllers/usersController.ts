@@ -1,9 +1,12 @@
 import { NextFunction, Request, Response } from "express";
-import bcrypt from "bcryptjs";
 import User from "../../../database/models/User";
 import CustomJwtPayload from "../../../types/payload";
 import { UserRegister, DatabaseUser, LoginUser } from "../../../types/user";
-import { createToken, hashCreator } from "../../../utils/auth/auth";
+import {
+  createToken,
+  hashCompare,
+  hashCreator,
+} from "../../../utils/auth/auth";
 import CustomError from "../../../utils/CustomError/CustomError";
 
 export const userRegister = async (
@@ -42,7 +45,6 @@ export const userLogin = async (
 
   try {
     findUser = await User.findOne({ email: user.email });
-
     if (!findUser) {
       next(userError);
       return;
@@ -58,10 +60,7 @@ export const userLogin = async (
   }
 
   try {
-    const isPasswordValid = await bcrypt.compare(
-      user.password,
-      findUser.password
-    );
+    const isPasswordValid = await hashCompare(user.password, findUser.password);
     if (!isPasswordValid) {
       userError.message = "Password invalid";
       next(userError);
