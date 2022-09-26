@@ -64,7 +64,6 @@ describe("Given the user controller", () => {
       password: "",
       email: "",
       id: "",
-      image: "",
     };
     const req: Partial<Request> = {
       body: mockUserLogin,

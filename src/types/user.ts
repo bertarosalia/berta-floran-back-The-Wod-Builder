@@ -2,7 +2,6 @@ export interface User {
   name: string;
   email: string;
   password: string;
-  image?: string;
 }
 
 export interface UserRegister {
@@ -19,7 +18,6 @@ export interface LoginUser {
 export interface DatabaseUser {
   name: string;
   email: string;
-  image: string;
   id: string;
   password: string;
 }
