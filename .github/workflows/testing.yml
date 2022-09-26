@@ -16,5 +16,3 @@ jobs:
 
       - name: Testing
         run: npm test
-        env:
-          SECRET: ${{secrets.SECRET}}
