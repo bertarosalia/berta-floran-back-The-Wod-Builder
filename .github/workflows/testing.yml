@@ -18,4 +18,3 @@ jobs:
         run: npm test
         env:
           REACT_APP_API_URL: ${{ env.REACT_APP_API_URL }}
-          SECRET: ${{ secrets.SECRET }}
