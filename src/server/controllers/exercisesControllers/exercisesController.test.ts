@@ -1,21 +1,18 @@
 import { NextFunction, Request, Response } from "express";
 import Exercise from "../../../database/models/Exercise";
+import { ExerciseUpdated } from "../../../types/exercisesInterface";
 import CustomError from "../../../utils/CustomError/CustomError";
 import {
   createExercise,
   deleteExercise,
   getOneExerciseById,
   getAllExercises,
+  updateExercise,
 } from "./exercisesControllers";
 
-let res: Partial<Response>;
 let next = jest.fn() as NextFunction;
 
 beforeAll(() => {
-  res = {
-    status: jest.fn().mockReturnThis(),
-    json: jest.fn(),
-  };
   next = jest.fn();
 });
 
@@ -38,6 +35,10 @@ jest.mock("../../../database/models/Exercise", () => ({
 describe("Given a controller get all exercises", () => {
   describe("When it receives a request", () => {
     const req: Partial<Request> = {};
+    const res: Partial<Response> = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
 
     test("Then it should response with a status code 200, and a mockExercise", async () => {
       const mockExerciseList = [{ exercise: "" }];
@@ -76,6 +77,10 @@ describe("Given a controller delete one exercise by id", () => {
       const req = {
         params: { id: "12" },
       } as Partial<Request>;
+      const res: Partial<Response> = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
 
       Exercise.findByIdAndDelete = jest.fn().mockResolvedValue(req);
       const expectedStatus = 200;
@@ -154,6 +159,10 @@ describe("Given a controller get one exercise by id", () => {
       const req = {
         params: { id: "12" },
       } as Partial<Request>;
+      const res: Partial<Response> = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
 
       Exercise.findById = jest.fn().mockResolvedValue(req);
       const expectedStatus = 200;
@@ -206,6 +215,10 @@ describe("Given a create exercise controller", () => {
       const req: Partial<Request> = {
         body: bodyExercise,
       };
+      const res: Partial<Response> = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
 
       const ErrorCustomTest = new CustomError(
         400,
@@ -222,6 +235,65 @@ describe("Given a create exercise controller", () => {
       );
 
       expect(next).toHaveBeenCalledWith(ErrorCustomTest);
+    });
+  });
+});
+
+describe("Given a update exercise controller", () => {
+  describe("When called with a request, a response and a next function", () => {
+    test("Then it should response with a status code 200 and the modified exercise", async () => {
+      const modifiedExercise: ExerciseUpdated = {
+        id: "1254485",
+        body: "body part",
+        name: "exercise name",
+        description: "what to do",
+        image: "how to do",
+      };
+      const requestTest = {
+        body: modifiedExercise,
+        params: { exerciseId: "jhvfbhfbhv" },
+      } as Partial<Request>;
+
+      const res: Partial<Response> = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn().mockResolvedValue({ modifiedExercise }),
+      };
+
+      Exercise.findByIdAndUpdate = jest
+        .fn()
+        .mockResolvedValue(modifiedExercise);
+
+      const expectedStatus = 200;
+      await updateExercise(requestTest as Request, res as Response, next);
+
+      expect(res.status).toHaveBeenCalledWith(expectedStatus);
+      expect(res.json).toHaveBeenCalledWith({ modifiedExercise });
+    });
+    test("Then it should next with an error if it cannot complete the update", async () => {
+      const errorTest = new CustomError(
+        400,
+        "Error updating exercise",
+        "Cannot update exercise"
+      );
+
+      Exercise.findByIdAndUpdate = jest.fn().mockRejectedValue(errorTest);
+
+      const req = {
+        params: { exerciseId: "" },
+      } as Partial<Request>;
+
+      const res: Partial<Response> = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn().mockResolvedValue([]),
+      };
+
+      await updateExercise(
+        req as Request,
+        res as Response,
+        next as NextFunction
+      );
+
+      expect(next).toHaveBeenCalledWith(errorTest);
     });
   });
 });
