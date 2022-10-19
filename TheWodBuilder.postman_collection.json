@@ -213,6 +213,37 @@
         "description": "Login an user "
       },
       "response": []
+    },
+    {
+      "name": "Update an exercise",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "  {\r\n        \"body\": \"Face\",\r\n        \"name\": \"Bar Muscle Up\",\r\n        \"description\": \"The muscle-up is a movement that begins from the hang, passes through portions of a pull-up and a dip, then finishes in a supported position with arms extended. Many athletes experience the strict bar muscle-up as more challenging than its counterpart on the rings.\",\r\n        \"image\": \"https://mundoentrenamiento.com/wp-content/uploads/2021/08/ejecucion-del-muscle-up.jpeg\",\r\n        \"id\": \"6321a224a3fa8622ce45e644\"\r\n    }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:4000/exercises/:exerciseId",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4000",
+          "path": ["exercises", ":exerciseId"],
+          "variable": [
+            {
+              "key": "exerciseId",
+              "value": "6321a224a3fa8622ce45e644"
+            }
+          ]
+        },
+        "description": "Update an exercise"
+      },
+      "response": []
     }
   ],
   "variable": [
