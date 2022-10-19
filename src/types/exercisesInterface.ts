@@ -1,7 +1,10 @@
-interface ExerciseCreate {
+export interface ExerciseCreate {
   body: string;
   name: string;
   description: string;
   image: string;
 }
-export default ExerciseCreate;
+
+export interface ExerciseUpdated extends ExerciseCreate {
+  id: string;
+}

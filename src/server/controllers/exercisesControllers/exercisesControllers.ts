@@ -1,6 +1,7 @@
 import Debug from "debug";
 import { NextFunction, Request, Response } from "express";
 import Exercise from "../../../database/models/Exercise";
+import { ExerciseUpdated } from "../../../types/exercisesInterface";
 import CustomError from "../../../utils/CustomError/CustomError";
 
 const debug = Debug("the-wod-builder:database:index");
@@ -82,6 +83,38 @@ export const createExercise = async (
       "Cannot create an exercise"
     );
 
+    next(customError);
+  }
+};
+
+export const updateExercise = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const exercise = req.body as ExerciseUpdated;
+  const { exerciseId } = req.params;
+
+  try {
+    const updatedExercise = {
+      ...exercise,
+      name: exercise.name,
+      body: exercise.body,
+      description: exercise.description,
+      image: exercise.image,
+    };
+
+    const modifiedExercise = await Exercise.findByIdAndUpdate(
+      exerciseId,
+      updatedExercise
+    );
+    res.status(200).json({ modifiedExercise });
+  } catch (error) {
+    const customError = new CustomError(
+      400,
+      "Error updating exercise",
+      "Cannot update exercise"
+    );
     next(customError);
   }
 };
