@@ -1,293 +1,255 @@
 {
-	"info": {
-		"_postman_id": "b2ad4298-6121-4587-b46d-89f5de6fddfc",
-		"name": "TheWodBuilder",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "22265573"
-	},
-	"item": [
-		{
-			"name": "Get all exercises",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{apiModified}}exercises",
-					"host": [
-						"{{apiModified}}exercises"
-					]
-				}
-			},
-			"response": [
-				{
-					"name": "Get all exercises",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{apiproject}}/exercises",
-							"host": [
-								"{{apiproject}}"
-							],
-							"path": [
-								"exercises"
-							]
-						}
-					},
-					"_postman_previewlanguage": null,
-					"header": null,
-					"cookie": [],
-					"body": null
-				}
-			]
-		},
-		{
-			"name": "Delete exercise",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{apiproject}}/exercises/:exerciseId",
-					"host": [
-						"{{apiproject}}"
-					],
-					"path": [
-						"exercises",
-						":exerciseId"
-					],
-					"variable": [
-						{
-							"key": "exerciseId",
-							"value": "6321e9d5c00225bb1f6b849a"
-						}
-					]
-				},
-				"description": "``Delete one item by id``"
-			},
-			"response": []
-		},
-		{
-			"name": "Endpoint Not Found",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{apiproject}}",
-					"host": [
-						"{{apiproject}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create new exercise",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"berta\",\r\n    \"body\": \"pepe\",\r\n    \"description\": \"bbhbhb\",\r\n    \"image\": \"jnjnjn\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{apiproject}}/exercises/create",
-					"host": [
-						"{{apiproject}}"
-					],
-					"path": [
-						"exercises",
-						"create"
-					]
-				},
-				"description": "create new exercise"
-			},
-			"response": []
-		},
-		{
-			"name": "Get one exercise by id",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "GET",
-				"header": [
-					{
-						"key": "id",
-						"value": "631a2afd37117ed57dcbc909",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{apiproject}}/exercises/:id",
-					"host": [
-						"{{apiproject}}"
-					],
-					"path": [
-						"exercises",
-						":id"
-					],
-					"query": [
-						{
-							"key": "id",
-							"value": "",
-							"disabled": true
-						}
-					],
-					"variable": [
-						{
-							"key": "id",
-							"value": "6317089bb03f90616c71a41c"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Register an user",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"{\r",
-							"    \"email\" = \"bertafloran@gmail.com\"\r",
-							"\"password\" = \"bertisima\",\r",
-							"}"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "email",
-						"value": "clara@clara.com",
-						"type": "text",
-						"disabled": true
-					},
-					{
-						"key": "password",
-						"value": "123456",
-						"type": "text",
-						"disabled": true
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"email\" : \"bertafloran@gmail.com\",\r\n\"password\" : \"bertisima\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:4000/user/register",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "4000",
-					"path": [
-						"user",
-						"register"
-					]
-				},
-				"description": "Register an user"
-			},
-			"response": []
-		},
-		{
-			"name": "Login an user",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"email\" : \"bertafloran@gmail.com\",\r\n\"password\" : \"bertisima\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:4000/user/login",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "4000",
-					"path": [
-						"user",
-						"login"
-					]
-				},
-				"description": "Login an user "
-			},
-			"response": []
-		},
-		{
-			"name": "Update an exercise",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "  {\r\n        \"body\": \"Face\",\r\n        \"name\": \"Bar Muscle Up\",\r\n        \"description\": \"The muscle-up is a movement that begins from the hang, passes through portions of a pull-up and a dip, then finishes in a supported position with arms extended. Many athletes experience the strict bar muscle-up as more challenging than its counterpart on the rings.\",\r\n        \"image\": \"https://mundoentrenamiento.com/wp-content/uploads/2021/08/ejecucion-del-muscle-up.jpeg\",\r\n        \"id\": \"6321a224a3fa8622ce45e644\"\r\n    }",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:4000/exercises/:exerciseId",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "4000",
-					"path": [
-						"exercises",
-						":exerciseId"
-					],
-					"variable": [
-						{
-							"key": "exerciseId",
-							"value": "6321a224a3fa8622ce45e644"
-						}
-					]
-				},
-				"description": "Update an exercise"
-			},
-			"response": []
-		}
-	],
-	"variable": [
-		{
-			"key": "apiproject",
-			"value": "https://bfloran-final-project-202207.herokuapp.com/theWodBuilder"
-		}
-	]
+  "info": {
+    "_postman_id": "b2ad4298-6121-4587-b46d-89f5de6fddfc",
+    "name": "TheWodBuilder",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "22265573"
+  },
+  "item": [
+    {
+      "name": "Get all exercises",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{apiModified}}exercises",
+          "host": ["{{apiModified}}exercises"]
+        }
+      },
+      "response": [
+        {
+          "name": "Get all exercises",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{apiproject}}/exercises",
+              "host": ["{{apiproject}}"],
+              "path": ["exercises"]
+            }
+          },
+          "_postman_previewlanguage": null,
+          "header": null,
+          "cookie": [],
+          "body": null
+        }
+      ]
+    },
+    {
+      "name": "Delete exercise",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{apiproject}}/exercises/:exerciseId",
+          "host": ["{{apiproject}}"],
+          "path": ["exercises", ":exerciseId"],
+          "variable": [
+            {
+              "key": "exerciseId",
+              "value": "6321e9d5c00225bb1f6b849a"
+            }
+          ]
+        },
+        "description": "``Delete one item by id``"
+      },
+      "response": []
+    },
+    {
+      "name": "Endpoint Not Found",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{apiproject}}",
+          "host": ["{{apiproject}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create new exercise",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"berta\",\r\n    \"body\": \"pepe\",\r\n    \"description\": \"bbhbhb\",\r\n    \"image\": \"jnjnjn\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{apiproject}}/exercises/create",
+          "host": ["{{apiproject}}"],
+          "path": ["exercises", "create"]
+        },
+        "description": "create new exercise"
+      },
+      "response": []
+    },
+    {
+      "name": "Get one exercise by id",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "id",
+            "value": "631a2afd37117ed57dcbc909",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{apiproject}}/exercises/:id",
+          "host": ["{{apiproject}}"],
+          "path": ["exercises", ":id"],
+          "query": [
+            {
+              "key": "id",
+              "value": "",
+              "disabled": true
+            }
+          ],
+          "variable": [
+            {
+              "key": "id",
+              "value": "6317089bb03f90616c71a41c"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Register an user",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "{\r",
+              "    \"email\" = \"bertafloran@gmail.com\"\r",
+              "\"password\" = \"bertisima\",\r",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "email",
+            "value": "clara@clara.com",
+            "type": "text",
+            "disabled": true
+          },
+          {
+            "key": "password",
+            "value": "123456",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\" : \"bertafloran@gmail.com\",\r\n\"password\" : \"bertisima\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:4000/user/register",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4000",
+          "path": ["user", "register"]
+        },
+        "description": "Register an user"
+      },
+      "response": []
+    },
+    {
+      "name": "Login an user",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\" : \"bertafloran@gmail.com\",\r\n\"password\" : \"bertisima\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:4000/user/login",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4000",
+          "path": ["user", "login"]
+        },
+        "description": "Login an user "
+      },
+      "response": []
+    },
+    {
+      "name": "Update an exercise",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "  {\r\n        \"body\": \"Face\",\r\n        \"name\": \"Bar Muscle Up\",\r\n        \"description\": \"The muscle-up is a movement that begins from the hang, passes through portions of a pull-up and a dip, then finishes in a supported position with arms extended. Many athletes experience the strict bar muscle-up as more challenging than its counterpart on the rings.\",\r\n        \"image\": \"https://mundoentrenamiento.com/wp-content/uploads/2021/08/ejecucion-del-muscle-up.jpeg\",\r\n        \"id\": \"6321a224a3fa8622ce45e644\"\r\n    }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:4000/exercises/:exerciseId",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4000",
+          "path": ["exercises", ":exerciseId"],
+          "variable": [
+            {
+              "key": "exerciseId",
+              "value": "6321a224a3fa8622ce45e644"
+            }
+          ]
+        },
+        "description": "Update an exercise"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "apiproject",
+      "value": "https://bfloran-final-project-202207.herokuapp.com/theWodBuilder"
+    }
+  ]
 }
