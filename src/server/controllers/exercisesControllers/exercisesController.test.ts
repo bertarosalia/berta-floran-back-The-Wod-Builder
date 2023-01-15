@@ -52,6 +52,7 @@ describe("Given a controller get all exercises", () => {
 
       expect(res.status).toHaveBeenCalledWith(200);
     });
+
     describe("When called but doesn´t return any valid data", () => {
       test("Then call next function with an error", async () => {
         Exercise.find = jest.fn().mockRejectedValue(new Error());
@@ -269,6 +270,7 @@ describe("Given a update exercise controller", () => {
       expect(res.status).toHaveBeenCalledWith(expectedStatus);
       expect(res.json).toHaveBeenCalledWith({ modifiedExercise });
     });
+
     test("Then it should next with an error if it cannot complete the update", async () => {
       const errorTest = new CustomError(
         400,
